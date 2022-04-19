@@ -1,7 +1,7 @@
 package com.rrpvm.testauth.Model;
 
 
-
+import com.rrpvm.testauth.entities.User;
 
 public class UserAuthorizationData {
     private String login;
@@ -26,5 +26,9 @@ public class UserAuthorizationData {
     public UserAuthorizationData(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+    public UserAuthorizationData(User user){
+        this.login = user.getLogin();
+        this.password = user.getPassword();
     }
 }

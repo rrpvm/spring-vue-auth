@@ -6,7 +6,7 @@
       name="logForm"
       v-on:submit.prevent="onSubmit"
     >
-      <h1>LOGIN</h1>
+      <h1>SIGN IN</h1>
       <InputForm placehText="Login" @inputChanged="handleLoginFormEvent" />
       <InputForm placehText="Password" @inputChanged="handlePassFormEvent" />
       <SubmitButton :callback="doLogin">Log In</SubmitButton>
@@ -25,7 +25,7 @@ export default {
     InputForm,
   },
   mounted() {
-    console.log(this.$route);
+    
   },
   data() {
     return {

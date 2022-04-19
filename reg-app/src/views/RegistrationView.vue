@@ -1,15 +1,15 @@
 <template>
-  <div class="registration-container">
+  <div class="login-container">
     <form
       action="submit"
       method="post"
-      name="regForm"
+      name="logForm"
       v-on:submit.prevent="onSubmit"
     >
-      <h1>SIGN UP</h1>
-      <InputForm name="login" placeholder="login" />
-      <InputForm name="password" placeholder="password" type="password" />
-      <SubmitButton :callback="doLogin">sign  up</SubmitButton>
+      <h1>SIN UP</h1>
+      <InputForm placehText="Username" @inputChanged="handleLoginFormEvent" />
+      <InputForm placehText="Password" @inputChanged="handlePassFormEvent" />
+      <SubmitButton :callback="signUp">Sign Up</SubmitButton>
     </form>
   </div>
 </template>
@@ -17,16 +17,43 @@
 <script>
 import SubmitButton from "../components/SubmitButton.vue";
 import InputForm from "../components/Input.vue";
+import axios from "axios";
+
 export default {
   components: {
     SubmitButton,
     InputForm,
   },
   mounted() {
-    console.log(this.$route.path);
+   
+  },
+  data() {
+    return {
+      login: String,
+      pass: String,
+    };
   },
   methods: {
-    doLogin() {},
+    signUp() {
+      axios({
+        method: "post",
+        url: "http://localhost:8081/signup",
+        data: {
+          login: this.login,
+          password: this.pass,
+        },
+      })
+        .then((responce) => {
+          console.log(responce);
+        })
+        .catch((e) => console.log(e));
+    },
+    handleLoginFormEvent(e) {
+      this.login = e;
+    },
+    handlePassFormEvent(e) {
+      this.pass = e;
+    },
   },
 };
 </script>
@@ -49,7 +76,7 @@ h1 {
   margin: 0;
   margin-top: 20px;
 }
-.registration-container {
+.login-container {
   background: #141414;
   max-width: 1600px;
   margin: auto;
