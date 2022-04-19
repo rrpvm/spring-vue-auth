@@ -16,15 +16,17 @@ public class UserDaoImpl {
     private UserRepository userRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-
     public User getUserById(Integer id){
         return userRepository.findById(id).get();
     }
     public List<UserAuthorizationData>getAuthDataList(){
-        System.out.println("called getAuthDataList()");
         List<UserAuthorizationData> data = new ArrayList<UserAuthorizationData>();
         userRepository.findAll().forEach(usr -> data.add(new UserAuthorizationData(usr)));
         return data;
+    }
+    public int addUserToDataBase(UserAuthorizationData data){
+        String query = "INSERT INTO users(login,password) VALUES (?,?)";
+        int result =  jdbcTemplate.update(query,data.getLogin(),data.getPassword());
+        return result;
     }
 }

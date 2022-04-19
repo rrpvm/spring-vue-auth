@@ -44,7 +44,9 @@ export default {
         },
       })
         .then((responce) => {
-          console.log(responce);
+          this.$store.commit('setJwtToken',responce.data);
+          this.$store.commit('setUsernameToken', this.login);
+          console.log(this.$store.state.auth);
         })
         .catch((e) => console.log(e));
     },
