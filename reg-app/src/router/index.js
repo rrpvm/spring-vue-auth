@@ -22,6 +22,17 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
+});
 
+router.beforeEach(async (to, from) => {
+  from;//skip error
+  const canAccess = await canUserAccess(to)
+  if (!canAccess) return '/login'
+});
+
+const canUserAccess = async (to)=>{
+  to;//skip error
+                             
+
+}
 export default router
