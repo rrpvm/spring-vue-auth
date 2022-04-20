@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomePage.vue'
-
+import storage from '../storage/storage'
+import axios from 'axios'
 const routes = [
   {
     path: '/',
@@ -10,13 +11,17 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/LoginPage.vue')
+    component: () => import('../views/LoginPage.vue')
   },
   {
     path: '/signup',
     name: 'signup',
-    component: () => import(/* webpackChunkName: "about" */ '../views/RegistrationView.vue')
+    component: () => import('../views/RegistrationView.vue')
   },
+  
+  { path: '/:pathMatch(.*)*', redirect: "/404" },
+  { path: '/404', name: 'NotFound', component: ()=>import("../views/NotFoundPage.vue") }
+  
 ]
 
 const router = createRouter({
@@ -31,8 +36,14 @@ router.beforeEach(async (to, from) => {
 });
 
 const canUserAccess = async (to)=>{
-  to;//skip error
-                             
-
+  const responce =  await axios({
+    method: "post",
+    url: "http://localhost:8081/login/authenticate",
+    data: {
+      token: storage.state.auth.token,
+      username:  storage.state.auth.username,
+    },
+  }); 
+   return  (((to.path === "/signup")||(to.path === "/login")) ? true : false) || responce.data === true ;
 }
 export default router

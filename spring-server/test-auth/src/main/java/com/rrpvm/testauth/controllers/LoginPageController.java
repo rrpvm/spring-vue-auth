@@ -1,10 +1,13 @@
 package com.rrpvm.testauth.controllers;
 
+import com.rrpvm.testauth.Model.JwtTokenRequest;
 import com.rrpvm.testauth.Model.UserAuthorizationData;
 import com.rrpvm.testauth.dao.UserDaoImpl;
 import com.rrpvm.testauth.utilities.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080/")
@@ -27,8 +30,14 @@ public class LoginPageController {
         return new String("builder");
     }
     @PostMapping("/authenticate")
-    public boolean authenticateUserByToken(@RequestBody String jwtToken,@RequestBody UserAuthorizationData userData){
-        return jwtUtil.validateToken(jwtToken,userData);
+    @CrossOrigin(origins = "http://localhost:8080/login")
+    public boolean authenticateUserByToken(@RequestBody JwtTokenRequest request){
+
+        List<UserAuthorizationData> data = userDaoImpl.getAuthDataList();
+        for(UserAuthorizationData user : data) {
+            if (user.getLogin().equals(request.getUsername())) return jwtUtil.validateToken(request.getToken(), user);
+        }
+        return false;
     }
     public UserDaoImpl getDao() {
         return userDaoImpl;

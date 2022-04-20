@@ -25,7 +25,7 @@ public class JwtTokenUtil implements Serializable {
     private String secret;
 
     //retrieve username from jwt token
-    public String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) throws io.jsonwebtoken.ExpiredJwtException {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -34,12 +34,12 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) throws io.jsonwebtoken.ExpiredJwtException {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
     //for retrieveing any information from token we will need the secret key
-    private Claims getAllClaimsFromToken(String token) {
+    private Claims getAllClaimsFromToken(String token) throws io.jsonwebtoken.ExpiredJwtException {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
@@ -69,7 +69,14 @@ public class JwtTokenUtil implements Serializable {
 
     //validate token
     public Boolean validateToken(String token, UserAuthorizationData user) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(user.getLogin()) && !isTokenExpired(token));
+        boolean result = false;
+        try{
+            final String username = getUsernameFromToken(token);
+            result = (username.equals(user.getLogin()) && !isTokenExpired(token));
+        }
+        catch (io.jsonwebtoken.ExpiredJwtException timeExpired){
+            return false;
+        }
+        return result;
     }
 }
