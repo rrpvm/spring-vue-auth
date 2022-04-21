@@ -36,15 +36,21 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   from;//skip error
   const canAccess = await canUserAccess(to);
-  if (!canAccess) return '/signin';
+  if (!canAccess){
+    console.log("to "+ to.path)
+    console.log("from "+ from.path)
+    return '/signin';
+  } 
 });
 
 const canUserAccess = async (to)=>{
-  const accessPaths  = ["/signup","/signin"];
-  for( let _path in accessPaths){
-    if(to.path === _path)return true;//обход авторизации - свободные пути
+  const accessPaths  = ["/signup","/signin","/"];
+  for( let _path in accessPaths){//index 
+    if(to.path == accessPaths[_path]){
+      return true;//обход авторизации - свободные пути
+    }
   }
-   return  isSessionValid();//все остальное только с авторизацией
+  return isSessionValid();//все остальное только с авторизацией
 }
 
 
@@ -58,7 +64,7 @@ const isSessionValid = async () =>{
       username:  storage.state.auth.username,
     },
   });
-  return responce; 
+  return responce.status == 200; 
 }
 export default router
 export { isSessionValid };

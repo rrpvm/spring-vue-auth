@@ -10,6 +10,9 @@
       <router-link :to="{ path: '/profile',name: 'profile', params: { id: 1 }}" class="navbar-item" v-if="isLogged">
         <div>Profile</div>
       </router-link>
+      <router-link to="/home" class="navbar-item" v-if="isLogged" @click="logOut">
+        <div>Log out</div>
+      </router-link>
       <router-link to="/signup" class="navbar-item" v-if="!isLogged">
         <div>Sign up</div>
       </router-link>
@@ -28,8 +31,13 @@ export default {
   methods: {
     async getLoggedState() {
       const value = await isSessionValid();
-      this.isLogged = value.data;
+      this.isLogged = value;
       return value;
+    },
+    logOut(){
+       this.$localStorage.remove('jwtToken');
+       this.$localStorage.remove('username');
+       this.$route.push('/');
     },
   },
   /*lifecycle hook before BEFORE_MOUNTED & MOUNTED*/ created() {

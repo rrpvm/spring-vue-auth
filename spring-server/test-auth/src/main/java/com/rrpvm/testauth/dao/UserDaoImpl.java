@@ -44,7 +44,7 @@ public class UserDaoImpl {
         if(result > 0)dbChanged = true;
         return result;
     }
-    public List<User> getCachedUserData() {
+    private List<User> getCachedUserData() {
         return cachedUserData;
     }
     private List<User> preCacheUserData(){

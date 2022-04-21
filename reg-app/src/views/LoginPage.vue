@@ -24,9 +24,7 @@ export default {
     SubmitButton,
     InputForm,
   },
-  mounted() {
-    
-  },
+  mounted() {},
   data() {
     return {
       login: String,
@@ -34,18 +32,23 @@ export default {
     };
   },
   methods: {
-    doLogin() {
+    async doLogin() {
       axios({
         method: "post",
-        url: "http://localhost:8081/login",
+        url: "http://localhost:8081/signin",
         data: {
           login: this.login,
           password: this.pass,
         },
       })
         .then((responce) => {
-          this.$store.commit('setJwtToken',responce.data);
-          this.$store.commit('setUsernameToken', this.login);
+          if (responce.data === 'success') {
+            this.$store.commit("setJwtToken", responce.headers.jwt);
+            this.$store.commit("setUsernameToken", this.login);
+            this.$router.push({name : "home"});
+            
+          }
+          console.log(this.$router); //CTRL+F
         })
         .catch((e) => console.log(e));
     },
