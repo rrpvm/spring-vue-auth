@@ -1,0 +1,70 @@
+<template>
+  <header>
+    <div class="navbar-bar">
+      <router-link to="/" class="navbar-item">
+        <div>Home</div>
+      </router-link>
+      <router-link to="/signin" class="navbar-item" v-if="!isLogged">
+        <div>Log in</div>
+      </router-link>
+      <router-link :to="{ path: '/profile',name: 'profile', params: { id: 1 }}" class="navbar-item" v-if="isLogged">
+        <div>Profile</div>
+      </router-link>
+      <router-link to="/signup" class="navbar-item" v-if="!isLogged">
+        <div>Sign up</div>
+      </router-link>
+    </div>
+  </header>
+</template>
+
+<script>
+import { isSessionValid } from "@/router";
+export default {
+  data() {
+    return {
+      isLogged: Boolean,
+    };
+  },
+  methods: {
+    async getLoggedState() {
+      const value = await isSessionValid();
+      this.isLogged = value.data;
+      return value;
+    },
+  },
+  /*lifecycle hook before BEFORE_MOUNTED & MOUNTED*/ created() {
+    this.getLoggedState();
+  },
+};
+</script>
+
+<style>
+header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: #141414;
+}
+.navbar-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  width: 80%;
+  background: #141414;
+}
+.navbar-item {
+  padding: 20px 25px;
+  background: #141414;
+  text-decoration: none;
+  color: rgb(250, 250, 250);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.navbar-item:hover {
+  background: #971919;
+}
+</style>

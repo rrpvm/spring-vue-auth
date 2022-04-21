@@ -9,16 +9,20 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/login',
+    path: '/signin',
     name: 'login',
     component: () => import('../views/LoginPage.vue')
   },
   {
     path: '/signup',
-    name: 'signup',
+    name: 'register',
     component: () => import('../views/RegistrationView.vue')
   },
-  
+  {
+    path: '/profile/:id',
+    name: 'profile',
+    component: () => import('../views/ProfilePage.vue')
+  },
   { path: '/:pathMatch(.*)*', redirect: "/404" },
   { path: '/404', name: 'NotFound', component: ()=>import("../views/NotFoundPage.vue") }
   
@@ -31,19 +35,30 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   from;//skip error
-  const canAccess = await canUserAccess(to)
-  if (!canAccess) return '/login'
+  const canAccess = await canUserAccess(to);
+  if (!canAccess) return '/signin';
 });
 
 const canUserAccess = async (to)=>{
+  const accessPaths  = ["/signup","/signin"];
+  for( let _path in accessPaths){
+    if(to.path === _path)return true;//обход авторизации - свободные пути
+  }
+   return  isSessionValid();//все остальное только с авторизацией
+}
+
+
+const isSessionValid = async () =>{
+  if(storage.state.auth.token === '' || storage.state.auth.username === '')return false;
   const responce =  await axios({
     method: "post",
-    url: "http://localhost:8081/login/authenticate",
+    url: "http://localhost:8081/signin/authenticate",
     data: {
       token: storage.state.auth.token,
       username:  storage.state.auth.username,
     },
-  }); 
-   return  (((to.path === "/signup")||(to.path === "/login")) ? true : false) || responce.data === true ;
+  });
+  return responce; 
 }
 export default router
+export { isSessionValid };

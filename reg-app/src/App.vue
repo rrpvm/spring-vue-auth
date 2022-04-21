@@ -1,9 +1,17 @@
 <template>
-  <nav>
-   
-  </nav>
+  <NavBar/>
   <router-view/>
 </template>
+
+<script>
+import NavBar from "./components/NavBar.vue"
+export default {
+  components:{
+    NavBar,
+  }
+}
+</script>
+
 
 <style>
 #app {
@@ -28,5 +36,6 @@ nav a.router-link-exact-active {
 }
 *{
   box-sizing: border-box;
+  margin: 0;
 }
 </style>

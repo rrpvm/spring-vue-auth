@@ -43,9 +43,9 @@ export default {
           password: this.pass,
         },
       })
-        .then((responce) => {
-          console.log(responce);
-        })
+        //.then((responce) => {
+        //  console.log(responce.data);
+       // })
         .catch((e) => console.log(e));
     },
     handleLoginFormEvent(e) {
