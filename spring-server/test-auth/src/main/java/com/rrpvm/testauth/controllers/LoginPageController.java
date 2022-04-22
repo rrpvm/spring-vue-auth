@@ -5,10 +5,7 @@ import com.rrpvm.testauth.Model.UserAuthorizationData;
 import com.rrpvm.testauth.dao.UserDaoImpl;
 import com.rrpvm.testauth.utilities.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,22 +40,18 @@ public class LoginPageController {
 
     @PostMapping("/authenticate")
     @CrossOrigin(origins = "http://localhost:8080/signin")
-    @ResponseStatus(HttpStatus.OK)
-    public void authenticateUserByToken(@RequestBody JwtTokenRequest request) {
+    public ResponseEntity authenticateUserByToken(@RequestBody JwtTokenRequest request) {
 
         List<UserAuthorizationData> data = userDaoImpl.getAuthDataList();
         for (UserAuthorizationData user : data) {
             if (user.getLogin().equals(request.getUsername()))
                 if (jwtUtil.validateToken(request.getToken(), user)) {
-                    return;
+                    return ResponseEntity.ok(new String("success"));
                 }
         }
-        onAuthorizationFailed();
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("failed");
     }
-    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    private void onAuthorizationFailed(){
-        System.out.println("failed");
-    }
+
 
     public UserDaoImpl getDao() {
         return userDaoImpl;

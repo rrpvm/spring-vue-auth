@@ -64,7 +64,7 @@ const isSessionValid = async () =>{
       username:  storage.state.auth.username,
     },
   });
-  return responce.status == 200; 
+  return  responce.data === "success" && responce.status === 200; 
 }
 export default router
 export { isSessionValid };

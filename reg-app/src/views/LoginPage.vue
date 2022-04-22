@@ -18,6 +18,7 @@
 import SubmitButton from "../components/SubmitButton.vue";
 import InputForm from "../components/Input.vue";
 import axios from "axios";
+import _event from '../event/eventListener.js';
 
 export default {
   components: {
@@ -45,8 +46,8 @@ export default {
           if (responce.data === 'success') {
             this.$store.commit("setJwtToken", responce.headers.jwt);
             this.$store.commit("setUsernameToken", this.login);
-            this.$router.push({name : "home"});
-            
+            this.$router.push({name : "home"}); 
+            _event.trigger('userLogged');        
           }
           console.log(this.$router); //CTRL+F
         })

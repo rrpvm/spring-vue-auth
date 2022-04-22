@@ -22,6 +22,7 @@
 
 <script>
 import { isSessionValid } from "@/router";
+import _event from '../event/eventListener.js';
 export default {
   data() {
     return {
@@ -35,13 +36,18 @@ export default {
       return value;
     },
     logOut(){
-       this.$localStorage.remove('jwtToken');
-       this.$localStorage.remove('username');
-       this.$route.push('/');
+       this.$store.commit('setJwtToken','');
+       this.$store.commit('setUsernameToken','');
+       this.getLoggedState();
+       this.$router.push("/signin");
     },
   },
   /*lifecycle hook before BEFORE_MOUNTED & MOUNTED*/ created() {
     this.getLoggedState();
+    _event.on('userLogged', ()=>{
+     this.getLoggedState();
+    });
+
   },
 };
 </script>
