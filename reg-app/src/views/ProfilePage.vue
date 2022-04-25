@@ -22,7 +22,6 @@ export default {
     }
   },
   async mounted(){
-    console.log( this.$route.fullPath);
     const responce =  await axios( "http://localhost:8081"+ this.$route.fullPath);
     this.username = responce.data.username;
   }

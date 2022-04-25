@@ -12,7 +12,10 @@ public class User {
     private String login;
     @Column(name="password")
     private String password;
-
+    @Column(name="games_played")
+    private Integer playedGames;
+    @Column(name="match_making_rating")
+    private Integer matchMakingRating;
     public Integer getId() {
         return id;
     }
@@ -37,10 +40,27 @@ public class User {
         this.password = password;
     }
 
-    public User(Integer id, String login, String password) {
+    public User(Integer id, String login, String password,Integer playedGames) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.playedGames = playedGames;
     }
     public User(){};
+
+    public Integer getPlayedGames() {
+        return playedGames;
+    }
+
+    public void setPlayedGames(Integer playedGames) {
+        this.playedGames = playedGames;
+    }
+
+    public Integer getMatchMakingRating() {
+        return matchMakingRating;
+    }
+
+    public void setMatchMakingRating(Integer matchMakingRating) {
+        this.matchMakingRating = matchMakingRating;
+    }
 }

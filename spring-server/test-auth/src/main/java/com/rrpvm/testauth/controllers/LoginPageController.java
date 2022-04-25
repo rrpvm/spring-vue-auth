@@ -31,7 +31,6 @@ public class LoginPageController {
                 return new HttpEntity<>(Integer.toString(user_data.getId()), headers);
             }
         }
-        System.out.println("return -1");
         return new HttpEntity<>(Integer.toString(-1), headers);
     }
     @RequestMapping("/forget")
@@ -50,7 +49,6 @@ public class LoginPageController {
                     return ResponseEntity.ok(user.getId());
                 }
         }
-        System.out.println("return -1 from auth by token");
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(-1);
     }
 

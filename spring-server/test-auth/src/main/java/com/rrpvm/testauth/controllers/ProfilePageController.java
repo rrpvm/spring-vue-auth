@@ -14,7 +14,7 @@ public class ProfilePageController {
     @RequestMapping(value = "/{id}", method = GET)
     @ResponseBody
     public UserPublicData getProfileData(@PathVariable int id){
-    return new UserPublicData(userDaoImpl.getUserById(id).getLogin());
+    return new UserPublicData(userDaoImpl.getUserById(id));
     }
 
     public UserDaoImpl getUserDaoImpl() {

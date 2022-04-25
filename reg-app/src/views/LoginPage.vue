@@ -49,7 +49,6 @@ export default {
             this.$store.commit("setUserId", responce.data);
             this.$router.push({name : "home"}); 
             _event.trigger('userLogged');       
-            console.log("loginPage()" + this.$store.state.auth.id); 
           }
           console.log(this.$router); //CTRL+F
         })

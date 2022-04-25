@@ -61,7 +61,6 @@ export default {
     _event.on("userLogged", () => {
       this.getLoggedState();
     });
-    console.log("created() + "+ this.$store.state.auth.id);
   },
 };
 </script>
