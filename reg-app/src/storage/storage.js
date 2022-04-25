@@ -5,6 +5,7 @@ const storage = new Vuex.Store({
         auth: {
             token: localStorage.getItem('jwtToken') || '',
             username: localStorage.getItem('username') || '',
+            id: localStorage.getItem('userId') || -1,
         }
     },
     mutations: {
@@ -15,6 +16,10 @@ const storage = new Vuex.Store({
         setUsernameToken(state, name) {
             localStorage.setItem('username', name);
             state.auth.username = name;
+        },
+        setUserId(state, id) {
+            localStorage.setItem('userId', id);
+            state.auth.id = id;
         },
     },
     actions: {

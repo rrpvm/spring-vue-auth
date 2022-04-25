@@ -17,7 +17,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 input {
   width: 33%;
   border: 2px solid rgb(111, 111, 255);

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Component("userDaoImpl")
 public class UserDaoImpl {
@@ -20,7 +22,15 @@ public class UserDaoImpl {
     private List<User>cachedUserData;
     boolean dbChanged = true;//состояние,которое отражает измененность базы данных относительно уже сохраненной
     public User getUserById(Integer id){
-        return userRepository.findById(id).get();
+        Optional<User> user = null;
+        try{
+            user =  userRepository.findById(id);
+            return user.get();
+        }
+        catch (NoSuchElementException exception){
+            System.out.println(id);
+        }
+        return new User();
     }
     public List<UserAuthorizationData>getAuthDataList(){
         List<UserAuthorizationData> data = new ArrayList<UserAuthorizationData>();

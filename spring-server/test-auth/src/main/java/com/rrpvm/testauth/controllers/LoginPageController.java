@@ -28,10 +28,11 @@ public class LoginPageController {
             if (user_data.getLogin().equals(data.getLogin()) && user_data.getPassword().equals(data.getPassword())) {
                 headers.add(ACCESS_CONTROL_EXPOSE_HEADERS," jwt");
                 headers.add("jwt",jwtUtil.generateToken(user_data));
-                return new HttpEntity<>("success", headers);
+                return new HttpEntity<>(Integer.toString(user_data.getId()), headers);
             }
         }
-        return new HttpEntity<>("fail", headers);
+        System.out.println("return -1");
+        return new HttpEntity<>(Integer.toString(-1), headers);
     }
     @RequestMapping("/forget")
     public String restorePass() {
@@ -46,10 +47,11 @@ public class LoginPageController {
         for (UserAuthorizationData user : data) {
             if (user.getLogin().equals(request.getUsername()))
                 if (jwtUtil.validateToken(request.getToken(), user)) {
-                    return ResponseEntity.ok(new String("success"));
+                    return ResponseEntity.ok(user.getId());
                 }
         }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("failed");
+        System.out.println("return -1 from auth by token");
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(-1);
     }
 
 

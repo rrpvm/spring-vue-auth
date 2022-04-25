@@ -33,8 +33,8 @@ export default {
     };
   },
   methods: {
-    async doLogin() {
-      axios({
+     doLogin() {
+       axios({
         method: "post",
         url: "http://localhost:8081/signin",
         data: {
@@ -43,11 +43,13 @@ export default {
         },
       })
         .then((responce) => {
-          if (responce.data === 'success') {
+          if (responce.data !== -1) {
             this.$store.commit("setJwtToken", responce.headers.jwt);
             this.$store.commit("setUsernameToken", this.login);
+            this.$store.commit("setUserId", responce.data);
             this.$router.push({name : "home"}); 
-            _event.trigger('userLogged');        
+            _event.trigger('userLogged');       
+            console.log("loginPage()" + this.$store.state.auth.id); 
           }
           console.log(this.$router); //CTRL+F
         })

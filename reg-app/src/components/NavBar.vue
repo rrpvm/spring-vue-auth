@@ -7,10 +7,23 @@
       <router-link to="/signin" class="navbar-item" v-if="!isLogged">
         <div>Log in</div>
       </router-link>
-      <router-link :to="{ path: '/profile',name: 'profile', params: { id: 1 }}" class="navbar-item" v-if="isLogged">
+      <router-link
+        :to="{
+          path: '/profile',
+          name: 'profile',
+          params: { id: this.$store.state.auth.id},
+        }"
+        class="navbar-item"
+        v-if="isLogged"
+      >
         <div>Profile</div>
       </router-link>
-      <router-link to="/home" class="navbar-item" v-if="isLogged" @click="logOut">
+      <router-link
+        to="/home"
+        class="navbar-item"
+        v-if="isLogged"
+        @click="logOut"
+      >
         <div>Log out</div>
       </router-link>
       <router-link to="/signup" class="navbar-item" v-if="!isLogged">
@@ -22,7 +35,7 @@
 
 <script>
 import { isSessionValid } from "@/router";
-import _event from '../event/eventListener.js';
+import _event from "../event/eventListener.js";
 export default {
   data() {
     return {
@@ -35,19 +48,20 @@ export default {
       this.isLogged = value;
       return value;
     },
-    logOut(){
-       this.$store.commit('setJwtToken','');
-       this.$store.commit('setUsernameToken','');
-       this.getLoggedState();
-       this.$router.push("/signin");
+    logOut() {
+      this.$store.commit("setJwtToken", "");
+      this.$store.commit("setUsernameToken", "");
+      this.$store.commit("setUserId", -1);
+      this.getLoggedState();
+      this.$router.push("/signin");
     },
   },
   /*lifecycle hook before BEFORE_MOUNTED & MOUNTED*/ created() {
     this.getLoggedState();
-    _event.on('userLogged', ()=>{
-     this.getLoggedState();
+    _event.on("userLogged", () => {
+      this.getLoggedState();
     });
-
+    console.log("created() + "+ this.$store.state.auth.id);
   },
 };
 </script>
