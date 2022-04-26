@@ -49,7 +49,7 @@ public class LoginPageController {
                     return ResponseEntity.ok(user.getId());
                 }
         }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(-1);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(-1);
     }
 
 

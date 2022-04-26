@@ -1,2 +1,6 @@
-package com.rrpvm.testauth.exceptions;public class NotUserFound {
+package com.rrpvm.testauth.exceptions;
+
+import java.io.IOException;
+
+public class NotUserFound extends IOException {
 }

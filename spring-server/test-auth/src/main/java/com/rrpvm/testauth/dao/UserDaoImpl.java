@@ -2,6 +2,7 @@ package com.rrpvm.testauth.dao;
 
 import com.rrpvm.testauth.Model.UserAuthorizationData;
 import com.rrpvm.testauth.entities.User;
+import com.rrpvm.testauth.exceptions.NotUserFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,16 +22,15 @@ public class UserDaoImpl {
 
     private List<User>cachedUserData;
     boolean dbChanged = true;//состояние,которое отражает измененность базы данных относительно уже сохраненной
-    public User getUserById(Integer id){
+    public User getUserById(Integer id) throws NotUserFound {
         Optional<User> user = null;
         try{
             user =  userRepository.findById(id);
             return user.get();
         }
         catch (NoSuchElementException exception){
-            System.out.println(id);
+            throw  new NotUserFound();
         }
-        return new User();
     }
     public List<UserAuthorizationData>getAuthDataList(){
         List<UserAuthorizationData> data = new ArrayList<UserAuthorizationData>();

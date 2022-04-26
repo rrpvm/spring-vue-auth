@@ -17,7 +17,7 @@ public class UserPublicData {
     public UserPublicData(User fullData) {
         this.username = fullData.getLogin();
         this.playedGames = fullData.getPlayedGames();
-        this.matchMakingRating = fullData.getMatchMakingRating();
+        //this.matchMakingRating = fullData.getMatchMakingRating();
     }
     public String getUsername() {
         return username;
