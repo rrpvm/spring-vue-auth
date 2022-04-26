@@ -63,8 +63,8 @@ const isSessionValid = async () =>{
       token: storage.state.auth.token,
       username:  storage.state.auth.username,
     },
-  });
-  return  responce.data != "-1" && responce.status === 200; 
+  }).catch(e => {console.log(e); return false;});
+  return  responce.data != -1 && responce.status === 200; 
 }
 export default router
 export { isSessionValid };
